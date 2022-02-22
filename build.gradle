@@ -1,0 +1,42 @@
+buildscript {
+    // ext: build.gradle에서 사용하는 전역 변수를 설정하겠다는 의미
+    // 여기서는 springBootVersion 전역변수를 생성하고 그 값을 '2.1.7.RELEASE'로 하겠다는 의미.
+    // 즉, spring-boot-gradle-plugin라는 스프링부트 그레이들 플로그인의 2.1.7.RELEASE를 의존성으로 받겠다는 의미
+    ext {
+        springBootVersion = '2.1.7.RELEASE'
+    }
+    // repositories: 각종 의존성 (라이브러리)들을 어떤 원격 저장소에서 받을지 정함.
+    // 기본적으로 mavenCentral을 많이 사용하지만, 최근에는 라이브러리 업로드 난이도 때문에 jcenter도 많이 사용함
+    repositories {
+        mavenCentral()
+        // jcenter는 더 이상 지원하지 않는다.
+        jcenter()
+    }
+    // dependencies: 프로젝트 개발에 필요한 의존성들을 선언하는 곳.
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+//io.spring.dependency-management 플러그인은 스프링 부트의 의존성들을 관리해주는 플러그인.
+apply plugin: 'io.spring.dependency-management'
+
+group 'com.jojoldu.book'
+version '1.0-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // gradle 7 버전에서는 compile과 testCompile이 deprecated되어 implementation 과 testImplementation을 사용하여 빌드해야 한다.
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+test {
+    useJUnitPlatform()
+}
